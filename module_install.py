@@ -1,3 +1,5 @@
+# 아직 개발중입니다. 사용하셔도 문제가 없습니다. 단 불편하실겁니다.
+
 try:
     import discord
     import asyncio
