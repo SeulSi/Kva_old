@@ -10,8 +10,6 @@ import datetime
 import json
 import requests
 import random
-from tkinter import *
-from tkinter import messagebox
 
 #
 # Broadcast | 공지
@@ -25,9 +23,12 @@ from tkinter import messagebox
 def restart():
     os.execl(sys.executable, sys.executable, * sys.argv)
 
-window = Tk()
+def log(command, author, servername, serverid, message):
+    return print(str(command)+" | "+str(author)+" | "+str(servername)+" | "+str(serverid)+" | "+str(message))
+
 token = info.token()
 prefix= info.prefix()
+nospaceprefix = info.prefix().replace(' ', '')
 idlist=[]
 devid = info.devid()
 config = ConfigParser()
@@ -35,6 +36,7 @@ youtube_datakey = info.youtube_datakey()
 playing_msg = "크바야 도와줘 를 입력해보세요!"
 restart_playing_msg = "봇 재시작중..."
 stop_playing_msg = "봇 종료중..."
+afklist = []
 
 class db(discord.Client):
     async def on_ready(self):
@@ -43,6 +45,10 @@ class db(discord.Client):
     async def on_message(self, message):
         if message.author.bot:
             pass
+
+        if message.author.id in afklist:
+            await message.channel.send("짜쟌! "+message.author.mention+" 님이 잠수에서 깨어났어요!")
+            afklist.remove(message.author.id)
 
         ##### prefix를 무시받고 하는 부분
         #if message.content == "@someone" or message.content == "@아무나": #오프라인 불가능기능
@@ -68,10 +74,12 @@ class db(discord.Client):
             except:
                 await message.channel.send("** _(∩ ͡° ͜ʖ ͡°)⊃━☆ﾟ. o ･ ｡ﾟ_            _%s_**" % message.author)
  
-        ##### prefix를 꼭 사용하는 부분
-        if message.content.startswith(prefix):
-            if message.content == prefix:
-                pass
+        ##### prefix 또는 nospaceprefix 를 꼭 사용하는 부분
+        if message.content.startswith(prefix) or message.content.startswith(nospaceprefix):
+            if message.content == nospaceprefix:
+                a = ['안녕하세요','왜용?','?','뭐용?!','(╯°□°）╯︵ ┻━┻ 이얍 필살기','MENTION POEWRRRRRR '+message.author.mention,'ㅗㅜㅑ','ㅇ?','!','ㅁㄴㅇㄹ','`'+prefix+"도와줘` 를 쳐보렴. 그러면 날 가지고 놀수있어.",'훗','풉키풉키','ㅍㅋㅍㅋ','아직 배우고 있다고오!','심심해여','맨션빔 맞아보실?','ㅁ?','ㅁ!!!!!']
+                a = random.choice(a)
+                await message.channel.send(a)
 
             if message.content.startswith(prefix+"유튜브"):
                 if message.content[7:] == "":
@@ -87,7 +95,6 @@ class db(discord.Client):
                     bbd = requests.get('https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&q='+aad+'&key='+youtube_datakey)
                     global ccd
                     ccd = bbd.text
-                    print(ccd)
                     try:
                         ab = json.loads(ccd)["items"][0]["snippet"]["title"]
                     except:
@@ -130,31 +137,52 @@ class db(discord.Client):
                         pass
                     #await message.channel.send("**[1]** "+ab+"\n**[2]** "+ac+"\n**[3]** "+ad+"\n**[4]** "+ae+"\n**[5]** "+af)
                     embed=discord.Embed()
+                    num = 0
                     try:
+                        num = num + 1
                         embed=embed.add_field(name=ab, value="https://www.youtube.com/watch?v="+ab1)
                     except:
+                        num = num - 1
                         pass
                     try:
+                        num = num + 1
                         embed=embed.add_field(name=ac, value="https://www.youtube.com/watch?v="+ac1)
                     except:
+                        num = num - 1
                         pass
                     try:
+                        num = num + 1
                         embed=embed.add_field(name=ad, value="https://www.youtube.com/watch?v="+ad1)
                     except:
+                        num = num - 1
                         pass
                     try:
+                        num = num + 1
                         embed=embed.add_field(name=ae, value="https://www.youtube.com/watch?v="+ae1)
                     except:
+                        num = num - 1
                         pass
                     try:
+                        num = num + 1
                         embed=embed.add_field(name=af, value="https://www.youtube.com/watch?v="+af1)
                     except:
+                        num = num - 1
                         pass
+                    embed = embed.set_footer(text="최대 5 개의 결과 중 "+str(num)+" 개의 검색결과 입니다.")
                     await message.channel.send(embed=embed)
 
-            if message.content == prefix+"도와줘":
-                embed=discord.Embed(title="", description="아직 없어요...ㅠㅠ")
-                await message.channel.send(embed=embed)
+            if message.content == prefix+"도와줘" or message.content == prefix+"도움" or message.content == prefix+"help" or message.content == prefix+"헬프" or message.content == prefix+"헬프미" or message.content == prefix+"helpme" or message.content == prefix+"help me":
+                await message.channel.send("도움 따윈 필요없다.")
+                await message.channel.send("~~사실 아직 안만듬~~")
+
+            if message.content == prefix+"잠수":
+                if message.content[6:] == "":
+                    await message.channel.send(message.author.mention+" 님이 잠수를 시작합니다.")
+                    afklist.append(message.author.id)
+                else:
+                    reason = message.content[6:]
+                    await message.channel.send(message.author.mention+" 님이 잠수를 시작합니다.\n사유: "+reason)
+                    afklist.append(message.author.id)
 
             ##### 서버 관련 측정 
             if message.content == prefix+"핑": ## 내가 다시 생각해서 다시 만들자
