@@ -24,7 +24,7 @@ def restart():
     os.execl(sys.executable, sys.executable, * sys.argv)
 
 def log(command, author, servername, serverid, message):
-    return print(str(command)+" | "+str(author)+" | "+str(servername)+" | "+str(serverid)+" | "+str(message))
+    return print(str(command)+" | "+str(author)+" | "+str(servername)+" | "+str(serverid)+": "+str(message))
 
 token = info.token()
 prefix= info.prefix()
@@ -71,8 +71,10 @@ class db(discord.Client):
                     list.append(a)
                 result=str(random.choice(list))
                 await message.channel.send("** _(∩ ͡° ͜ʖ ͡°)⊃━☆ﾟ. o ･ ｡ﾟ_            _%s_**" % result)
+                log('@someone, @아무나, @섬원, @서먼', message.author, message.guild.name, message.guild.id, message.content)
             except:
                 await message.channel.send("** _(∩ ͡° ͜ʖ ͡°)⊃━☆ﾟ. o ･ ｡ﾟ_            _%s_**" % message.author)
+                log('@someone, @아무나, @섬원, @서먼', message.author, message.guild.name, message.guild.id, message.content)
  
         ##### prefix 또는 nospaceprefix 를 꼭 사용하는 부분
         if message.content.startswith(prefix) or message.content.startswith(nospaceprefix):
@@ -80,6 +82,7 @@ class db(discord.Client):
                 a = ['안녕하세요','왜용?','?','뭐용?!','(╯°□°）╯︵ ┻━┻ 이얍 필살기','MENTION POEWRRRRRR '+message.author.mention,'ㅗㅜㅑ','ㅇ?','!','ㅁㄴㅇㄹ','`'+prefix+"도와줘` 를 쳐보렴. 그러면 날 가지고 놀수있어.",'훗','풉키풉키','ㅍㅋㅍㅋ','아직 배우고 있다고오!','심심해여','맨션빔 맞아보실?','ㅁ?','ㅁ!!!!!']
                 a = random.choice(a)
                 await message.channel.send(a)
+                log(prefix+", "+nospaceprefix, message.author, message.guild.name, message.guild.id, message.content)
 
             if message.content.startswith(prefix+"유튜브"):
                 if message.content[7:] == "":
@@ -170,19 +173,23 @@ class db(discord.Client):
                         pass
                     embed = embed.set_footer(text="최대 5 개의 결과 중 "+str(num)+" 개의 검색결과 입니다.")
                     await message.channel.send(embed=embed)
+                    log(prefix+"유튜브", message.author, message.guild.name, message.guild.id, message.content)
 
             if message.content == prefix+"도와줘" or message.content == prefix+"도움" or message.content == prefix+"help" or message.content == prefix+"헬프" or message.content == prefix+"헬프미" or message.content == prefix+"helpme" or message.content == prefix+"help me":
                 await message.channel.send("도움 따윈 필요없다.")
                 await message.channel.send("~~사실 아직 안만듬~~")
+                log(prefix+"도와줘, "+prefix+"도움, "+prefix+"help, "+prefix+"헬프, "+prefix+"헬프미, "+prefix+"helpme, "+prefix+"help me", message.author, message.guild.name, message.guild.id, message.content)
 
             if message.content == prefix+"잠수":
                 if message.content[6:] == "":
                     await message.channel.send(message.author.mention+" 님이 잠수를 시작합니다.")
                     afklist.append(message.author.id)
+                    log(prefix+"잠수", message.author, message.guild.name, message.guild.id, message.content)
                 else:
                     reason = message.content[6:]
                     await message.channel.send(message.author.mention+" 님이 잠수를 시작합니다.\n사유: "+reason)
                     afklist.append(message.author.id)
+                    log(prefix+"잠수", message.author, message.guild.name, message.guild.id, message.content)
 
             ##### 서버 관련 측정 
             if message.content == prefix+"핑": ## 내가 다시 생각해서 다시 만들자
@@ -194,10 +201,35 @@ class db(discord.Client):
                 asdf = asdf.split(".")
                 asdf = asdf[0]
                 await message.channel.send(message.author.mention+", %s ms" % asdf)
+                log(prefix+"핑", message.author, message.guild.name, message.guild.id, message.content)
 
             if message.content == prefix+"온도":
-                a = os.popen("vcgencmd measure_temp") # 라즈비안 or 라즈베리파이용가 서버일경우 가능한 명령어.
+                a = os.popen("vcgencmd measure_temp").read() # 라즈비안 or 라즈베리파이용가 서버일경우 가능한 명령어.
                 await message.channel.send("봇 <@%s> 서버의 온도는 현재 `%s` 입니다." % (str(476518072421711920), a))
+                log(prefix+"핑", message.author, message.guild.name, message.guild.id, message.content)
+
+            if message.content == prefix+"서버리스트" or message.content == prefix+"서리" or message.content == prefix+"serverlist":
+                a = "" 
+                user = 0 
+                server = [] 
+                for s in client.guilds: 
+                    a = a + "`" + s.name + "`" + "\n" 
+                    user += s.member_count
+                await message.channel.send("이 봇이 작동하는 서버는 `%s` 개 입니다.\n모든서버의 유저수(중복)는 `%s` 명 입니다." % (str(len(client.guilds)), user))
+                log(prefix+"서버리스트, "+prefix+"서리, "+prefix+"serverlist", message.author, message.guild.name, message.guild.id, message.content)
+
+            if message.content == prefix+"서버리스트 자세히" or message.content == prefix+"서리 자세히" or message.content == prefix+"serverlist 자세히":
+                a = "" 
+                user = 0 
+                server = [] 
+                for s in client.guilds: 
+                    a = a + "`" + s.name + "`" + "\n" 
+                    user += s.member_count
+                embed=discord.Embed(title="", description=a)
+                embed.set_footer(text="이 봇이 작동하는 서버는 `%s` 개 입니다.\n모든서버의 유저수(중복)는 `%s` 명 입니다." % (str(len(client.guilds)), user))
+                await message.author.send(embed=embed)
+                await message.channel.send("DM채널을 보시게 자네 "+message.author.mention)
+                log(prefix+"서버리스트 자세히, "+prefix+"서리 자세히, "+prefix+"serverlist 자세히", message.author, message.guild.name, message.guild.id, message.content)
 
             ##### 관리자전용
             if message.content == prefix+"재시작":
@@ -205,15 +237,19 @@ class db(discord.Client):
                     await client.change_presence(activity=discord.Game(name=restart_playing_msg))
                     await message.channel.send("재시작합니다...")
                     restart()
+                    log(prefix+"재시작", message.author, message.guild.name, message.guild.id, message.content)
                 else:
                     await message.channel.send("뿜뿜 안되욧")
+                    log(prefix+"재시작", message.author, message.guild.name, message.guild.id, message.content)
             if message.content == prefix+"종료":
                 if str(message.author.id) == devid:
+                    log(prefix+"종료", message.author, message.guild.name, message.guild.id, message.content)
                     await client.change_presence(activity=discord.Game(name=stop_playing_msg))
                     await message.channel.send("종료합니다... 이용해주셔서 감사합니다! ")
                     await client.close()
                 else:
                     await message.channel.send("뿜뿜 안되욧")
+                    log(prefix+"종료", message.author, message.guild.name, message.guild.id, message.content)
 
 client = db()
 client.run(token)
