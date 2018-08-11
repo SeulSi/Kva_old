@@ -3,7 +3,7 @@ import asyncio
 import os, sys
 import time
 from bs4 import BeautifulSoup
-from collections import Collection
+#from collections import Collection
 import info
 from configparser import ConfigParser
 import datetime
@@ -180,7 +180,7 @@ class db(discord.Client):
                 await message.channel.send("~~사실 아직 안만듬~~")
                 log(prefix+"도와줘, "+prefix+"도움, "+prefix+"help, "+prefix+"헬프, "+prefix+"헬프미, "+prefix+"helpme, "+prefix+"help me", message.author, message.guild.name, message.guild.id, message.content)
 
-            if message.content == prefix+"잠수":
+            if message.content.startswith(prefix+"잠수"):
                 if message.content[6:] == "":
                     await message.channel.send(message.author.mention+" 님이 잠수를 시작합니다.")
                     afklist.append(message.author.id)
