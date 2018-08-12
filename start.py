@@ -19,6 +19,8 @@ import random
 #
 # 제작자 또는 문의 : NAVER#0001 | BGM#
 #
+#로그기능 사용법 log(prefix+"명령어, message.author, message.guild.name, message.guild.id, message.content")
+#안되있는건 알아서 해주세요
 
 def restart():
     os.execl(sys.executable, sys.executable, * sys.argv)
@@ -41,6 +43,8 @@ afklist = []
 class db(discord.Client):
     async def on_ready(self):
         print("Ready !! \n\n=====")
+        global botstarttime
+        botstarttime = datetime.datetime.now()
         await client.change_presence(activity=discord.Game(name=playing_msg))
     async def on_message(self, message):
         if message.author.bot:
@@ -204,14 +208,13 @@ class db(discord.Client):
                 log(prefix+"핑", message.author, message.guild.name, message.guild.id, message.content)
 
             if message.content == prefix+"온도":
-                a = os.popen("vcgencmd measure_temp").read() # 라즈비안 or 라즈베리파이용가 서버일경우 가능한 명령어.
+                a = os.popen("vcgencmd measure_temp").read() # 라즈비안 or 라즈베리파이(ARM) 서버일경우 가능한 명령어.
                 await message.channel.send("봇 <@%s> 서버의 온도는 현재 `%s` 입니다." % (str(476518072421711920), a))
                 log(prefix+"핑", message.author, message.guild.name, message.guild.id, message.content)
 
             if message.content == prefix+"서버리스트" or message.content == prefix+"서리" or message.content == prefix+"serverlist":
                 a = "" 
                 user = 0 
-                server = [] 
                 for s in client.guilds: 
                     a = a + "`" + s.name + "`" + "\n" 
                     user += s.member_count
@@ -221,7 +224,6 @@ class db(discord.Client):
             if message.content == prefix+"서버리스트 자세히" or message.content == prefix+"서리 자세히" or message.content == prefix+"serverlist 자세히":
                 a = "" 
                 user = 0 
-                server = [] 
                 for s in client.guilds: 
                     a = a + "`" + s.name + "`" + "\n" 
                     user += s.member_count
@@ -231,6 +233,22 @@ class db(discord.Client):
                 await message.channel.send("DM채널을 보시게 자네 "+message.author.mention)
                 log(prefix+"서버리스트 자세히, "+prefix+"서리 자세히, "+prefix+"serverlist 자세히", message.author, message.guild.name, message.guild.id, message.content)
 
+            if message.content == prefix+"업타임" or message.content == prefix+"켜진시간" or message.content == prefix+"온타임":
+                uptime = datetime.datetime.now() - botstarttime
+                day = uptime.days
+                day = str(day)
+                uptime = str(uptime)
+                uptime = uptime.split(":")
+                hours = uptime[0]
+                hours = hours.replace(" days", "일")
+                hours = hours.replace(" day", "일")
+                minitues = uptime[1]
+                seconds = uptime[2]
+                seconds = seconds.split(".")
+                seconds = seconds[0]
+
+                await message.channel.send("현재 나는 `%s` 시간 `%s` 분 `%s` 초 동안 깨어있었어!" % (hours, minitues, seconds))
+
             ##### 관리자전용
             if message.content == prefix+"재시작":
                 if str(message.author.id) == devid:
@@ -239,7 +257,7 @@ class db(discord.Client):
                     restart()
                     log(prefix+"재시작", message.author, message.guild.name, message.guild.id, message.content)
                 else:
-                    await message.channel.send("뿜뿜 안되욧")
+                    await message.channel.send("왜")
                     log(prefix+"재시작", message.author, message.guild.name, message.guild.id, message.content)
             if message.content == prefix+"종료":
                 if str(message.author.id) == devid:
@@ -248,7 +266,7 @@ class db(discord.Client):
                     await message.channel.send("종료합니다... 이용해주셔서 감사합니다! ")
                     await client.close()
                 else:
-                    await message.channel.send("뿜뿜 안되욧")
+                    await message.channel.send("뭐")
                     log(prefix+"종료", message.author, message.guild.name, message.guild.id, message.content)
 
 client = db()
