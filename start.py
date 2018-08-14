@@ -178,6 +178,62 @@ class db(discord.Client):
                     embed = embed.set_footer(text="최대 5 개의 결과 중 "+str(num)+" 개의 검색결과 입니다.")
                     await message.channel.send(embed=embed)
                     log(prefix+"유튜브", message.author, message.guild.name, message.guild.id, message.content)
+                
+            if message.content.startswith(prefix+"가위바위보") or message.content.startswith(prefix+"가바보") or message.content.startswith(prefix+"짱깽뽀") or message.content.startswith(prefix+"주먹가위보"):
+                if message.content[9:] == "" or message.content[7:] == "":
+                    await message.channel.send(message.author.mention+" `가위`, `바위`, `보` 중 하나를 선택해줘! `예시) "+prefix+"가위바위보 가위`")
+                else:
+                    a = ["가위","바위","보"]
+                    a = random.choice(a)
+                    b = message.content[9:]
+                    b = b.replace(" ", "")
+                    c = message.content[7:]
+                    c = c.replace(" ", "")
+                    try:
+                        if b == "가위":
+                            if a == "가위":
+                                await message.channel.send(message.author.mention+", 봇: `가위`, 당신: `가위` | 비겼습니다.")
+                            elif a == "바위":
+                                await message.channel.send(message.author.mention+", 봇: `바위`, 당신: `가위` | 당신이 졌습니다.")
+                            elif a == "보":
+                                await message.channel.send(message.author.mention+", 봇: `보`, 당신: `가위` | 당신이 이겼습니다.")
+                        elif b == "바위":
+                            if a == "가위":
+                                await message.channel.send(message.author.mention+", 봇: `가위`, 당신: `바위` | 당신이 이겼습니다.")
+                            elif a == "바위":
+                                await message.channel.send(message.author.mention+", 봇: `바위`, 당신: `바위` | 비겼습니다.")
+                            elif a == "보":
+                                await message.channel.send(message.author.mention+", 봇: `보`, 당신: `바위` | 당신이 졌습니다.")
+                        elif b == "보":
+                            if a == "가위":
+                                await message.channel.send(message.author.mention+", 봇: `가위', 당신: `보` | 당신이 졌습니다.")
+                            elif a == "바위":
+                                await message.channel.send(message.author.mention+", 봇: `바위`, 당신: `보` | 당신이 이겼습니다.")
+                            elif a == "보":
+                                await message.channel.send(message.author.mention+", 봇: `보`, 당신: `보` | 비겼습니다.")
+                        elif c == "가위":
+                            if a == "가위":
+                                await message.channel.send(message.author.mention+", 봇: `가위`, 당신: `가위` | 비겼습니다.")
+                            elif a == "바위":
+                                await message.channel.send(message.author.mention+", 봇: `바위`, 당신: `가위` | 당신이 졌습니다.")
+                            elif a == "보":
+                                await message.channel.send(message.author.mention+", 봇: `보`, 당신: `가위` | 당신이 이겼습니다.")
+                        elif c == "바위":
+                            if a == "가위":
+                                await message.channel.send(message.author.mention+", 봇: `가위`, 당신: `바위` | 당신이 이겼습니다.")
+                            elif a == "바위":
+                                await message.channel.send(message.author.mention+", 봇: `바위`, 당신: `바위` | 비겼습니다.")
+                            elif a == "보":
+                                await message.channel.send(message.author.mention+", 봇: `보`, 당신: `바위` | 당신이 졌습니다.")
+                        elif c == "보":
+                            if a == "가위":
+                                await message.channel.send(message.author.mention+", 봇: `가위', 당신: `보` | 당신이 졌습니다.")
+                            elif a == "바위":
+                                await message.channel.send(message.author.mention+", 봇: `바위`, 당신: `보` | 당신이 이겼습니다.")
+                            elif a == "보":
+                                await message.channel.send(message.author.mention+", 봇: `보`, 당신: `보` | 비겼습니다.")
+                    except:
+                        await message.channel.send("어허... `가위`, `바위`, `보` 중 하나를 선택해줘! `예시) "+prefix+"가위바위보 가위`")
 
             if message.content == prefix+"도와줘" or message.content == prefix+"도움" or message.content == prefix+"help" or message.content == prefix+"헬프" or message.content == prefix+"헬프미" or message.content == prefix+"helpme" or message.content == prefix+"help me":
                 await message.channel.send("도움 따윈 필요없다.")
@@ -209,7 +265,7 @@ class db(discord.Client):
 
             if message.content == prefix+"온도":
                 a = os.popen("vcgencmd measure_temp").read() # 라즈비안 or 라즈베리파이(ARM) 서버일경우 가능한 명령어.
-                await message.channel.send("봇 <@%s> 서버의 온도는 현재 `%s` 입니다." % (str(476518072421711920), a))
+                await message.channel.send("봇 <@%s> 서버의 온도는 현재 `%s` 이야!" % (str(476518072421711920), a))
                 log(prefix+"핑", message.author, message.guild.name, message.guild.id, message.content)
 
             if message.content == prefix+"서버리스트" or message.content == prefix+"서리" or message.content == prefix+"serverlist":
@@ -218,7 +274,7 @@ class db(discord.Client):
                 for s in client.guilds: 
                     a = a + "`" + s.name + "`" + "\n" 
                     user += s.member_count
-                await message.channel.send("이 봇이 작동하는 서버는 `%s` 개 입니다.\n모든서버의 유저수(중복)는 `%s` 명 입니다." % (str(len(client.guilds)), user))
+                await message.channel.send("이 봇이 작동하는 서버는 `%s` 개 이고,\n모든서버의 유저수(중복)는 `%s` 명 이야!" % (str(len(client.guilds)), user))
                 log(prefix+"서버리스트, "+prefix+"서리, "+prefix+"serverlist", message.author, message.guild.name, message.guild.id, message.content)
 
             if message.content == prefix+"서버리스트 자세히" or message.content == prefix+"서리 자세히" or message.content == prefix+"serverlist 자세히":
