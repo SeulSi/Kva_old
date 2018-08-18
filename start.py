@@ -147,7 +147,7 @@ class db(discord.Client):
                     num = 0
                     try:
                         num = num + 1
-                        embed=embed.add_field(name=ab, value="https://www.youtube.com/watch?v="+ab1)
+                        embed=embed.add_field(name=ab, value="https://www.youtube.com/watch?v="+ab1, inline=False)
                     except:
                         num = num - 1
                         pass
@@ -159,7 +159,7 @@ class db(discord.Client):
                         pass
                     try:
                         num = num + 1
-                        embed=embed.add_field(name=ad, value="https://www.youtube.com/watch?v="+ad1)
+                        embed=embed.add_field(name=ad, value="https://www.youtube.com/watch?v="+ad1, inline=False)
                     except:
                         num = num - 1
                         pass
@@ -171,7 +171,7 @@ class db(discord.Client):
                         pass
                     try:
                         num = num + 1
-                        embed=embed.add_field(name=af, value="https://www.youtube.com/watch?v="+af1)
+                        embed=embed.add_field(name=af, value="https://www.youtube.com/watch?v="+af1, inline=False)
                     except:
                         num = num - 1
                         pass
@@ -189,51 +189,48 @@ class db(discord.Client):
                     b = b.replace(" ", "")
                     c = message.content[7:]
                     c = c.replace(" ", "")
-                    try:
-                        if b == "가위":
-                            if a == "가위":
-                                await message.channel.send(message.author.mention+", 봇: `가위`, 당신: `가위` | 비겼습니다.")
-                            elif a == "바위":
-                                await message.channel.send(message.author.mention+", 봇: `바위`, 당신: `가위` | 당신이 졌습니다.")
-                            elif a == "보":
-                                await message.channel.send(message.author.mention+", 봇: `보`, 당신: `가위` | 당신이 이겼습니다.")
-                        elif b == "바위":
-                            if a == "가위":
-                                await message.channel.send(message.author.mention+", 봇: `가위`, 당신: `바위` | 당신이 이겼습니다.")
-                            elif a == "바위":
-                                await message.channel.send(message.author.mention+", 봇: `바위`, 당신: `바위` | 비겼습니다.")
-                            elif a == "보":
-                                await message.channel.send(message.author.mention+", 봇: `보`, 당신: `바위` | 당신이 졌습니다.")
-                        elif b == "보":
-                            if a == "가위":
-                                await message.channel.send(message.author.mention+", 봇: `가위', 당신: `보` | 당신이 졌습니다.")
-                            elif a == "바위":
-                                await message.channel.send(message.author.mention+", 봇: `바위`, 당신: `보` | 당신이 이겼습니다.")
-                            elif a == "보":
-                                await message.channel.send(message.author.mention+", 봇: `보`, 당신: `보` | 비겼습니다.")
-                        elif c == "가위":
-                            if a == "가위":
-                                await message.channel.send(message.author.mention+", 봇: `가위`, 당신: `가위` | 비겼습니다.")
-                            elif a == "바위":
-                                await message.channel.send(message.author.mention+", 봇: `바위`, 당신: `가위` | 당신이 졌습니다.")
-                            elif a == "보":
-                                await message.channel.send(message.author.mention+", 봇: `보`, 당신: `가위` | 당신이 이겼습니다.")
-                        elif c == "바위":
-                            if a == "가위":
-                                await message.channel.send(message.author.mention+", 봇: `가위`, 당신: `바위` | 당신이 이겼습니다.")
-                            elif a == "바위":
-                                await message.channel.send(message.author.mention+", 봇: `바위`, 당신: `바위` | 비겼습니다.")
-                            elif a == "보":
-                                await message.channel.send(message.author.mention+", 봇: `보`, 당신: `바위` | 당신이 졌습니다.")
-                        elif c == "보":
-                            if a == "가위":
-                                await message.channel.send(message.author.mention+", 봇: `가위', 당신: `보` | 당신이 졌습니다.")
-                            elif a == "바위":
-                                await message.channel.send(message.author.mention+", 봇: `바위`, 당신: `보` | 당신이 이겼습니다.")
-                            elif a == "보":
-                                await message.channel.send(message.author.mention+", 봇: `보`, 당신: `보` | 비겼습니다.")
-                    except:
-                        await message.channel.send("어허... `가위`, `바위`, `보` 중 하나를 선택해줘! `예시) "+prefix+"가위바위보 가위`")
+                    if b == "가위":
+                        if a == "가위":
+                            await message.channel.send(message.author.mention+", 봇: `가위✌`, 당신: `가위✌` | 비겼습니다.")
+                        elif a == "바위":
+                            await message.channel.send(message.author.mention+", 봇: `바위👊`, 당신: `가위✌` | 당신이 졌습니다.")
+                        elif a == "보":
+                            await message.channel.send(message.author.mention+", 봇: `보🖐`, 당신: `가위✌` | 당신이 이겼습니다.")
+                    elif b == "바위":
+                        if a == "가위":
+                            await message.channel.send(message.author.mention+", 봇: `가위✌`, 당신: `바위👊` | 당신이 이겼습니다.")
+                        elif a == "바위":
+                            await message.channel.send(message.author.mention+", 봇: `바위👊`, 당신: `바위👊` | 비겼습니다.")
+                        elif a == "보":
+                                await message.channel.send(message.author.mention+", 봇: `보🖐`, 당신: `바위👊` | 당신이 졌습니다.")
+                    elif b == "보":
+                        if a == "가위":
+                            await message.channel.send(message.author.mention+", 봇: `가위✌', 당신: `보🖐` | 당신이 졌습니다.")
+                        elif a == "바위":
+                            await message.channel.send(message.author.mention+", 봇: `바위👊`, 당신: `보🖐` | 당신이 이겼습니다.")
+                        elif a == "보":
+                            await message.channel.send(message.author.mention+", 봇: `보🖐`, 당신: `보🖐` | 비겼습니다.")
+                    elif c == "가위":
+                        if a == "가위":
+                            await message.channel.send(message.author.mention+", 봇: `가위✌`, 당신: `가위✌` | 비겼습니다.")
+                        elif a == "바위":
+                            await message.channel.send(message.author.mention+", 봇: `바위👊`, 당신: `가위✌` | 당신이 졌습니다.")
+                        elif a == "보":
+                            await message.channel.send(message.author.mention+", 봇: `보🖐`, 당신: `가위✌` | 당신이 이겼습니다.")
+                    elif c == "바위":
+                        if a == "가위":
+                            await message.channel.send(message.author.mention+", 봇: `가위✌`, 당신: `바위👊| 당신이 이겼습니다.")
+                        elif a == "바위":
+                            await message.channel.send(message.author.mention+", 봇: `바위👊`, 당신: `바위👊` | 비겼습니다.")
+                        elif a == "보":
+                            await message.channel.send(message.author.mention+", 봇: `보🖐`, 당신: `바위👊` | 당신이 졌습니다.")
+                    elif c == "보":
+                        if a == "가위":
+                            await message.channel.send(message.author.mention+", 봇: `가위✌', 당신: `보🖐` | 당신이 졌습니다.")
+                        elif a == "바위":
+                            await message.channel.send(message.author.mention+", 봇: `바위👊`, 당신: `보🖐` | 당신이 이겼습니다.")
+                        elif a == "보":
+                            await message.channel.send(message.author.mention+", 봇: `보🖐`, 당신: `보🖐` | 비겼습니다.")
 
             if message.content == prefix+"도와줘" or message.content == prefix+"도움" or message.content == prefix+"help" or message.content == prefix+"헬프" or message.content == prefix+"헬프미" or message.content == prefix+"helpme" or message.content == prefix+"help me":
                 await message.channel.send("도움 따윈 필요없다.")
