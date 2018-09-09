@@ -17,8 +17,6 @@ import random
 # Prefix 와 token, devid 등 사용자정보는 info.py 에서 변경가능합니다.
 # Prefix 설정시 `□□야 ` 와 같이 `□□야` 한 다음 한번 띄어쓰기를 꼭 쓰셔야합니다. 쓰지 않으실 시 작동하지 않습니다.
 #
-# 제작자 또는 문의 : NAVER#0001 | BGM#
-#
 #로그기능 사용법 log(prefix+"명령어, message.author, message.guild.name, message.guild.id, message.content")
 #안되있는건 알아서 해주세요
 
@@ -39,6 +37,7 @@ playing_msg = "크바야 도와줘 를 입력해보세요!"
 restart_playing_msg = "봇 재시작중..."
 stop_playing_msg = "봇 종료중..."
 afklist = []
+blacklist = []
 
 class db(discord.Client):
     async def on_ready(self):
@@ -49,6 +48,8 @@ class db(discord.Client):
     async def on_message(self, message):
         if message.author.bot:
             pass
+        if message.author.id in blacklist:
+            return
 
         if message.author.id in afklist:
             await message.channel.send("짜쟌! "+message.author.mention+" 님이 잠수에서 깨어났어요!")
@@ -83,7 +84,7 @@ class db(discord.Client):
         ##### prefix 또는 nospaceprefix 를 꼭 사용하는 부분
         if message.content.startswith(prefix) or message.content.startswith(nospaceprefix):
             if message.content == nospaceprefix:
-                a = ['안녕하세요','왜용?','?','뭐용?!','(╯°□°）╯︵ ┻━┻ 이얍 필살기','MENTION POEWRRRRRR '+message.author.mention,'ㅗㅜㅑ','ㅇ?','!','ㅁㄴㅇㄹ','`'+prefix+"도와줘` 를 쳐보렴. 그러면 날 가지고 놀수있어.",'훗','풉키풉키','ㅍㅋㅍㅋ','아직 배우고 있다고오!','심심해여','맨션빔 맞아보실?','ㅁ?','ㅁ!!!!!']
+                a = ['안녕하세요','왜요?','?','뭐요?','(╯°□°）╯︵ ┻━┻ 밥상을 업자','MENTION POEWRRRRRR '+message.author.mention,'ㅗㅜㅑ','ㅇ?','!','ㅁㄴㅇㄹ','`'+prefix+"도와줘` 를 쳐보렴. 그러면 날 가지고 놀수있어.",'훗','풉키풉키','ㅍㅋㅍㅋ','아직 배우고 있다고오!','심심해여','맨션빔 맞아보실?','ㅁ?','ㅁ!!!!!']
                 a = random.choice(a)
                 await message.channel.send(a)
                 log(prefix+", "+nospaceprefix, message.author, message.guild.name, message.guild.id, message.content)
@@ -95,12 +96,9 @@ class db(discord.Client):
                     a = message.content
                     a = a[8:]
                     await message.channel.send(message.author.mention+", `"+a+"` 에 대하여 검색했어요!")
-                    global aad
                     aad = message.content[7:]
                     aad = aad.replace(" ", "%20")
-                    global bbd
                     bbd = requests.get('https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&q='+aad+'&key='+youtube_datakey)
-                    global ccd
                     ccd = bbd.text
                     try:
                         ab = json.loads(ccd)["items"][0]["snippet"]["title"]
@@ -301,6 +299,9 @@ class db(discord.Client):
                 seconds = seconds[0]
 
                 await message.channel.send("현재 나는 `%s` 시간 `%s` 분 `%s` 초 동안 깨어있었어!" % (hours, minitues, seconds))
+
+            ##### 테스트기능
+
 
             ##### 관리자전용
             if message.content == prefix+"재시작":
